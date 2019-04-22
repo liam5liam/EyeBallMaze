@@ -4,7 +4,9 @@ public class main {
 
 	public static void main(String[] args) {
 		Model model = new Model();
-		System.out.println(model.gameMap);
+		model.printMaze();
+		
+		System.out.println(Colours.get("G"));
 	}
 
 }
