@@ -5,6 +5,8 @@ import java.util.Scanner;
 public class Model implements IGame {	
 		
 	
+	private static final String[] String = null;
+
 	public Model()
 	{
 	
@@ -24,18 +26,21 @@ public class Model implements IGame {
 	CoOrds player = new CoOrds(0, 0);
 	
 	public void printMaze(){
-		for (int i = 0; i < GameMap.length; ++i){
-			for (int j = 0; j < GameMap[i].length; ++j){
-				String pos = GameMap[i][j];
-				if (j == GameMap[i].length - 1){
+		for (int y = 0; y < GameMap.length; ++y){
+			for (int x = 0; x < GameMap[y].length; ++x){
+				String pos = GameMap[y][x];
+				if (x == GameMap[y].length - 1){
 					System.out.println(pos);
 				} else {
 					System.out.print(pos);
 				}
 				String[] arrPos = pos.split("");
-				if (arrPos[2] == "P"){
-					player.x = i;
-					player.y = j;
+				String chars = arrPos[2];
+				if (chars == "P"){
+					System.out.print(x);
+					System.out.print("found huim");
+					player.x = x;
+					player.y = y;
 				}
 			}
 		}
@@ -54,21 +59,23 @@ public class Model implements IGame {
 		return previousRowLength;
 	}
 	
-	public void getPlayerPos(){
-		
-	}
     public void restartMaze(){
     	
     }
     
     public void checkMove(String move){
-    	String[] arrOfStr = move.split("");
-    	//System.out.println();
+    	String[] arrOfInput = move.split("");
+    	Direction direction = Direction.get(arrOfInput[0]);
+    	int spaces = Integer.parseInt(arrOfInput[1]);
     	
+    	moveCounter++;
+    	if (direction == Direction.Down) { this.moveVertical(spaces);}
+    	if (direction == Direction.Up) { this.moveVertical(-spaces);}
     }
     
-    public void moveVertical(){
-    
+    public void moveVertical(int spaces){
+    	int movingTo = player.y + spaces;
+    	System.out.println(player.y);
     }
     
     public void updateMove(){
@@ -80,7 +87,6 @@ public class Model implements IGame {
     }
     
     public void start() {
-    	this.printMaze();
     	boolean isRunning = true;
     	while (isRunning){
     		//Console.Clear();
