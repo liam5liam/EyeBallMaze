@@ -29,16 +29,16 @@ public class Model implements IGame {
 		for (int y = 0; y < GameMap.length; ++y){
 			for (int x = 0; x < GameMap[y].length; ++x){
 				String pos = GameMap[y][x];
+				
 				if (x == GameMap[y].length - 1){
 					System.out.println(pos);
 				} else {
 					System.out.print(pos);
 				}
-				String[] arrPos = pos.split("");
-				String chars = arrPos[2];
-				if (chars == "P"){
-					System.out.print(x);
-					System.out.print("found huim");
+				
+				//Might as well update the current player position in the process
+				char thirdChar = pos.charAt(2);
+				if (thirdChar == 'P'){
 					player.x = x;
 					player.y = y;
 				}
@@ -75,7 +75,7 @@ public class Model implements IGame {
     
     public void moveVertical(int spaces){
     	int movingTo = player.y + spaces;
-    	System.out.println(player.y);
+    	System.out.println(movingTo);
     }
     
     public void updateMove(){
