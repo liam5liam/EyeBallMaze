@@ -6,6 +6,7 @@ public interface IGame {
 	public void printMaze();
 	public void restartMaze();
 	public void checkMove(String move);
+	public Object[] whatsAt(int x, int y);
 	public void updateMove();
 	public void showNextMove();
 	public void start();

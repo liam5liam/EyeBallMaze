@@ -1,11 +1,9 @@
 package nz.ac.ara.lab0442.EyeBallMaze;
 
+import java.util.Collection;
 import java.util.Scanner;
 
 public class Model implements IGame {	
-		
-	
-	private static final String[] String = null;
 
 	public Model()
 	{
@@ -45,6 +43,7 @@ public class Model implements IGame {
 			}
 		}
 	}
+	
 	public Integer getRowCount(){
 		return GameMap.length;	
 	}
@@ -63,6 +62,14 @@ public class Model implements IGame {
     	
     }
     
+    public Object[] whatsAt(int x, int y){
+    	String[] item = GameMap[y][x].split("");
+    	Shapes shape = Shapes.get(item[0]);
+    	Colours colour = Colours.get(item[1]);
+    	
+    	return new Object[]{shape, colour};
+    }
+    
     public void checkMove(String move){
     	String[] arrOfInput = move.split("");
     	Direction direction = Direction.get(arrOfInput[0]);
@@ -75,7 +82,7 @@ public class Model implements IGame {
     
     public void moveVertical(int spaces){
     	int movingTo = player.y + spaces;
-    	System.out.println(movingTo);
+    	Object[] item = whatsAt(player.x, movingTo);
     }
     
     public void updateMove(){
