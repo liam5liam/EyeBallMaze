@@ -4,9 +4,8 @@ public class main {
 
 	public static void main(String[] args) {
 		Model model = new Model();
-		model.printMaze();
+		model.start();
 		
-		System.out.println(Colours.get("G"));
 	}
 
 }
