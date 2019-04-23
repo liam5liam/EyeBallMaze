@@ -17,13 +17,16 @@ public class Model implements IGame {
 			{"TG  ", "SR  ", "SG  ", "DY  "},
 			{"TR  ", "TB  ", "SR  ", "TG  "},
 			{"SB  ", "DR  ", "TB  ", "DB  "},
-			{"    ", "DBP ", "    ", "    "}
+			{"    ", "DBU ", "    ", "    "}
 		};
 		
 	public int moveCounter = 0;
-	CoOrds player = new CoOrds(0, 0);
+	CoOrds player = new CoOrds(0, 0, Direction.Up);
 	
-	public void printMaze(){
+	Shapes currentShape = Shapes.Diamond;
+	Colours currentColour = Colours.Blue;
+	
+	public void updateMaze(){
 		for (int y = 0; y < GameMap.length; ++y){
 			for (int x = 0; x < GameMap[y].length; ++x){
 				String pos = GameMap[y][x];
@@ -35,10 +38,14 @@ public class Model implements IGame {
 				}
 				
 				//Might as well update the current player position in the process
-				char thirdChar = pos.charAt(2);
-				if (thirdChar == 'P'){
+				String[] item = GameMap[y][x].split("");
+				
+				if (item[2] != " "){
 					player.x = x;
 					player.y = y;
+					player.looking = Direction.get(item[2]);
+					this.currentShape = Shapes.get(item[0]);
+					this.currentColour = Colours.get(item[1]);
 				}
 			}
 		}
@@ -66,13 +73,17 @@ public class Model implements IGame {
     	String[] item = GameMap[y][x].split("");
     	Shapes shape = Shapes.get(item[0]);
     	Colours colour = Colours.get(item[1]);
-    	
-    	return new Object[]{shape, colour};
+    	Boolean isGoal = false;
+    	if (item[3] == "G"){
+    		isGoal = true;
+    	}
+    	return new Object[]{shape, colour, isGoal};
     }
     
     public void checkMove(String move){
     	String[] arrOfInput = move.split("");
     	Direction direction = Direction.get(arrOfInput[0]);
+    	
     	int spaces = Integer.parseInt(arrOfInput[1]);
     	
     	moveCounter++;
@@ -82,7 +93,9 @@ public class Model implements IGame {
     
     public void moveVertical(int spaces){
     	int movingTo = player.y + spaces;
-    	Object[] item = whatsAt(player.x, movingTo);
+    	Object[] newLocation = whatsAt(player.x, movingTo);
+    	Shapes newShape = newLocation[0]; 
+    	if (this.currentShape == )
     }
     
     public void updateMove(){
@@ -97,7 +110,7 @@ public class Model implements IGame {
     	boolean isRunning = true;
     	while (isRunning){
     		//Console.Clear();
-    		this.printMaze();
+    		this.updateMaze();
     		
 	    	Scanner in = new Scanner(System.in);
 	    	System.out.println("Enter next move. Format {direction}{steps}");
