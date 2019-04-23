@@ -21,7 +21,7 @@ public class Model implements IGame {
 		};
 		
 	public int moveCounter = 0;
-	CoOrds player = new CoOrds(0, 0, Direction.Up);
+	CoOrds player = new CoOrds(0, 0, PlayerDirection.Up);
 	
 	Shapes currentShape = Shapes.Diamond;
 	Colours currentColour = Colours.Blue;
@@ -40,10 +40,11 @@ public class Model implements IGame {
 				//Might as well update the current player position in the process
 				String[] item = GameMap[y][x].split("");
 				
-				if (item[2] != " "){
+				StringBuilder sb = new StringBuilder(GameMap[y][x]);
+				if (sb.charAt(2) == 'U'){
 					player.x = x;
 					player.y = y;
-					player.looking = Direction.get(item[2]);
+					player.looking = PlayerDirection.get(item[2]);
 					this.currentShape = Shapes.get(item[0]);
 					this.currentColour = Colours.get(item[1]);
 				}
@@ -87,15 +88,31 @@ public class Model implements IGame {
     	int spaces = Integer.parseInt(arrOfInput[1]);
     	
     	moveCounter++;
-    	if (direction == Direction.Down) { this.moveVertical(spaces);}
-    	if (direction == Direction.Up) { this.moveVertical(-spaces);}
+    	if (direction == Direction.Down) { this.moveVertical(spaces, PlayerDirection.Down);}
+    	if (direction == Direction.Up) { this.moveVertical(-spaces, PlayerDirection.Up);}
     }
     
-    public void moveVertical(int spaces){
+    public void moveVertical(int spaces, PlayerDirection playerDirection){
     	int movingTo = player.y + spaces;
     	Object[] newLocation = whatsAt(player.x, movingTo);
-    	Shapes newShape = newLocation[0]; 
-    	if (this.currentShape == )
+    	
+    	Shapes newShape = (Shapes) newLocation[0];
+    	Colours newColour = (Colours) newLocation[1];
+    	Boolean isGoal = (Boolean) newLocation[2];
+    	
+    	if (this.currentShape == newShape || this.currentColour == newColour){
+    		player.looking = playerDirection;
+    		
+    		StringBuilder sb = new StringBuilder(GameMap[player.y][player.x]);
+    		sb.deleteCharAt(2);
+    		sb.insert(2, " ");
+    		GameMap[player.y][player.x] = sb.toString();
+    		
+    		StringBuilder sb2 = new StringBuilder(GameMap[movingTo][player.x]);
+    		sb2.deleteCharAt(2);
+    		sb2.insert(2, player.looking);
+    		GameMap[movingTo][player.x] = sb2.toString();
+    	}
     }
     
     public void updateMove(){

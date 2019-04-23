@@ -3,23 +3,23 @@ package nz.ac.ara.lab0442.EyeBallMaze;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum Direction {
-	Up("W"),
-	Down("S"),
-	Left("A"),
-	Right("D");
+public enum PlayerDirection {
+	Up("U"),
+	Down("D"),
+	Left("L"),
+	Right("R");
 	
 	public final String abbreviation;
 	
-	private static final Map<String, Direction> lookup = new HashMap<String, Direction>();
+	private static final Map<String, PlayerDirection> lookup = new HashMap<String, PlayerDirection>();
 	
 	static {
-        for (Direction d : Direction.values()) {
+        for (PlayerDirection d : PlayerDirection.values()) {
             lookup.put(d.getAbbreviation(), d);
         }
     }
 	
-	Direction(String abbreviation){
+	PlayerDirection(String abbreviation){
 		this.abbreviation = abbreviation;
 	}
 	
@@ -27,7 +27,7 @@ public enum Direction {
         return abbreviation;
     }
 
-    public static Direction get(String abbreviation) {
+    public static PlayerDirection get(String abbreviation) {
         return lookup.get(abbreviation);
     }
 }
