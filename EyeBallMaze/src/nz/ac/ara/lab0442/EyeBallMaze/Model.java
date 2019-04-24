@@ -23,6 +23,8 @@ public class Model implements IGame {
 		};
 		
 	public int moveCounter = 0;
+	public int goalCounter = -1;
+	public int goalsSolved = 0;
 	CoOrds player = new CoOrds(0, 0, PlayerDirection.Up);
 	
 	Shapes currentShape = Shapes.Diamond;
@@ -41,8 +43,11 @@ public class Model implements IGame {
 				
 				//Might as well update the current player position in the process
 				String[] item = GameMap[y][x].split("");
-				
 				StringBuilder sb = new StringBuilder(GameMap[y][x]);
+				
+				if (Goal.get(item[3].toString())== Goal.Open && this.moveCounter == 0) {
+					this.goalCounter++;
+				}
 				if (sb.charAt(2) != ' '){
 					player.x = x;
 					player.y = y;
@@ -75,7 +80,7 @@ public class Model implements IGame {
     public Object[] whatsAt(int x, int y){
     	Object[] out = new Object[]{};
     	ArrayList<Object> temp = new ArrayList<Object>(Arrays.asList(out));
-    	if(y > GameMap.length || x > GameMap[0].length || y < 0 || x < 0){
+    	if(y >= GameMap.length || x > GameMap[0].length || y < 0 || x < 0){
     		temp.add(false);
     		System.out.println("Invalid Mo");
     	} else {
@@ -94,16 +99,27 @@ public class Model implements IGame {
     
     public void checkMove(String move){
     	String[] theirInput = move.split("");
-    	Direction direction = Direction.get(theirInput[0]);
+    	Direction direction = Direction.get(theirInput[0].toUpperCase());
     	
     	int spaces = Integer.parseInt(theirInput[1]);
-    	
-    	moveCounter++;
-    	if (direction == Direction.Down) { this.moveVertical(spaces, PlayerDirection.Down);}
-    	if (direction == Direction.Up) { this.moveVertical(-spaces, PlayerDirection.Up);}
-    	
-    	if (direction == Direction.Left) { this.moveHorizontal(-spaces, PlayerDirection.Left);}
-    	if (direction == Direction.Right) { this.moveHorizontal(spaces, PlayerDirection.Right);}
+    	if (this.isNotMovingBackwards(direction)){
+	    	moveCounter++;
+	    	if (direction == Direction.Down) { this.moveVertical(spaces, PlayerDirection.Down);}
+	    	if (direction == Direction.Up) { this.moveVertical(-spaces, PlayerDirection.Up);}
+	    	
+	    	if (direction == Direction.Left) { this.moveHorizontal(-spaces, PlayerDirection.Left);}
+	    	if (direction == Direction.Right) { this.moveHorizontal(spaces, PlayerDirection.Right);}
+    	} else {
+    		System.out.println("Player cannot move backwards!");
+    	}
+    }
+    
+    private boolean isNotMovingBackwards(Direction direction){
+    	Boolean out = true;
+    	if(direction.getNumber() + player.looking.getNumber() == 0){
+    		out = false;
+    	}
+    	return out;
     }
     
     private void moveHorizontal(int spaces, PlayerDirection playerDirection){
@@ -136,6 +152,8 @@ public class Model implements IGame {
 	    		sb2.insert(2, player.looking.getAbbreviation());
 	    		sb2.insert(3, Goal.Done.getAbbreviation());
 	    		GameMap[player.y][movingTo] = sb2.toString();
+	    		
+	    		this.goalsSolved++;
 	    		
 	    	}else if (goal == Goal.NaG && (this.currentShape == newShape || this.currentColour == newColour)){ 
 	    		player.looking = playerDirection;
@@ -184,6 +202,8 @@ public class Model implements IGame {
 	    		sb2.insert(3, Goal.Done.getAbbreviation());
 	    		GameMap[movingTo][player.x] = sb2.toString();
 	    		
+	    		this.goalsSolved++;
+	    		
 	    	}else if (goal == Goal.NaG && (this.currentShape == newShape || this.currentColour == newColour)){ 
 	    		player.looking = playerDirection;
 	    		
@@ -209,16 +229,49 @@ public class Model implements IGame {
     	
     }
     
+    public void clearConsole()
+    {
+        try
+        {
+            final String os = System.getProperty("os.name");
+
+            if (os.contains("Windows"))
+            {
+                Runtime.getRuntime().exec("cls");
+            }
+            else
+            {
+                Runtime.getRuntime().exec("clear");
+            }
+        }
+        catch (final Exception e)
+        {
+            //  Handle any exceptions.
+        }
+    }
+    
+    public boolean isComplete(){
+    	boolean result = true;
+    	if (this.goalCounter == this.goalsSolved){
+    		//result = false;
+    		System.out.println("Contratualations you have solved it");
+    	}
+    	return result;
+    }
+    
     public void start() {
-    	boolean isRunning = true;
-    	while (isRunning){
-    		//Console.Clear();
+    	this.updateMaze();
+    	while (isComplete()){
     		this.updateMaze();
     		
 	    	Scanner in = new Scanner(System.in);
 	    	System.out.println("Enter next move. Format {direction}{steps}");
 	    	String s = in.nextLine();
 	    	this.checkMove(s);
+	    	System.out.println(this.moveCounter);
+	    	System.out.println(this.goalCounter);
+	    	System.out.println(this.goalsSolved);
+	    	//this.clearConsole();
     	}
     }
 }
