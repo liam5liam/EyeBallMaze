@@ -82,13 +82,11 @@ public class Model implements IGame {
 	    	String[] item = GameMap[y][x].split("");
 	    	Shapes shape = Shapes.get(item[0]);
 	    	Colours colour = Colours.get(item[1]);
-	    	Boolean isGoal = false;
-	    	if (item[3] == "G"){
-	    		isGoal = true;
-	    	}
+	    	Goal goal = Goal.get(item[3]);
+	    	
 	    	temp.add(shape);
 	    	temp.add(colour);
-	    	temp.add(isGoal);
+	    	temp.add(goal);
 	    	
     	}
 		return temp.toArray();
@@ -108,7 +106,7 @@ public class Model implements IGame {
     	if (direction == Direction.Right) { this.moveHorizontal(spaces, PlayerDirection.Right);}
     }
     
-    public void moveHorizontal(int spaces, PlayerDirection playerDirection){
+    private void moveHorizontal(int spaces, PlayerDirection playerDirection){
     	int movingTo = player.x + spaces;
     	
     	Object[] newLocation = whatsAt(movingTo, player.y);
@@ -119,9 +117,27 @@ public class Model implements IGame {
     	else {
 	    	Shapes newShape = (Shapes) newLocation[0];
 	    	Colours newColour = (Colours) newLocation[1];
-	    	Boolean isGoal = (Boolean) newLocation[2];
+	    	Goal goal = (Goal) newLocation[2];
 	    	
-	    	if (this.currentShape == newShape || this.currentColour == newColour){ 
+	    	if(goal == Goal.Done){
+	    		System.out.println("This goal has already been solved");
+	    		
+	    	} else if (goal == Goal.Open && (this.currentShape == newShape || this.currentColour == newColour)){
+    			player.looking = playerDirection;
+	    		
+	    		StringBuilder sb = new StringBuilder(GameMap[player.y][player.x]);
+	    		sb.deleteCharAt(2);
+	    		sb.insert(2, " ");
+	    		GameMap[player.y][player.x] = sb.toString();
+	    		
+	    		StringBuilder sb2 = new StringBuilder(GameMap[player.y][movingTo]);
+	    		sb2.deleteCharAt(3);
+	    		sb2.deleteCharAt(2);
+	    		sb2.insert(2, player.looking.getAbbreviation());
+	    		sb2.insert(3, Goal.Done.getAbbreviation());
+	    		GameMap[player.y][movingTo] = sb2.toString();
+	    		
+	    	}else if (goal == Goal.NaG && (this.currentShape == newShape || this.currentColour == newColour)){ 
 	    		player.looking = playerDirection;
 	    		
 	    		StringBuilder sb = new StringBuilder(GameMap[player.y][player.x]);
@@ -129,21 +145,16 @@ public class Model implements IGame {
 	    		sb.insert(2, " ");
 	    		GameMap[player.y][player.x] = sb.toString();
 	    		
-	    		System.out.println(sb.toString());
-	    		
 	    		StringBuilder sb2 = new StringBuilder(GameMap[player.y][movingTo]);
-	    		System.out.println(sb2.toString());
 	    		sb2.deleteCharAt(2);
 	    		sb2.insert(2, player.looking.getAbbreviation());
 	    		GameMap[player.y][movingTo] = sb2.toString();
 	    		
-	    		System.out.println(sb2.toString());
-	    		
-	    	} else { System.out.println("Invalid MoveX");}
+	    	} else { System.out.println("Invalid Move");}
     	}
     }
     
-    public void moveVertical(int spaces, PlayerDirection playerDirection){
+    private void moveVertical(int spaces, PlayerDirection playerDirection){
     	int movingTo = player.y + spaces;
     	
     	Object[] newLocation = whatsAt(player.x, movingTo);
@@ -154,9 +165,26 @@ public class Model implements IGame {
     	else {
 	    	Shapes newShape = (Shapes) newLocation[0];
 	    	Colours newColour = (Colours) newLocation[1];
-	    	Boolean isGoal = (Boolean) newLocation[2];
-	    	
-	    	if (this.currentShape == newShape || this.currentColour == newColour){ 
+	    	Goal goal = (Goal) newLocation[2];
+	    	if(goal == Goal.Done){
+	    		System.out.println("This goal has already been solved");
+	    		
+	    	} else if (goal == Goal.Open && (this.currentShape == newShape || this.currentColour == newColour)){
+    			player.looking = playerDirection;
+	    		
+	    		StringBuilder sb = new StringBuilder(GameMap[player.y][player.x]);
+	    		sb.deleteCharAt(2);
+	    		sb.insert(2, " ");
+	    		GameMap[player.y][player.x] = sb.toString();
+	    		
+	    		StringBuilder sb2 = new StringBuilder(GameMap[movingTo][player.x]);
+	    		sb2.deleteCharAt(3);
+	    		sb2.deleteCharAt(2);
+	    		sb2.insert(2, player.looking.getAbbreviation());
+	    		sb2.insert(3, Goal.Done.getAbbreviation());
+	    		GameMap[movingTo][player.x] = sb2.toString();
+	    		
+	    	}else if (goal == Goal.NaG && (this.currentShape == newShape || this.currentColour == newColour)){ 
 	    		player.looking = playerDirection;
 	    		
 	    		StringBuilder sb = new StringBuilder(GameMap[player.y][player.x]);
