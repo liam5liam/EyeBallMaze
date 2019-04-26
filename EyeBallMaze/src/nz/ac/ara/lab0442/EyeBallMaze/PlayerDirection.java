@@ -13,7 +13,7 @@ public enum PlayerDirection {
 	public final int number;
 	
 	private static final Map<String, PlayerDirection> lookup = new HashMap<String, PlayerDirection>();
-	private static final Map<Integer, Direction> lookupInt = new HashMap<Integer, Direction>();
+	private static final Map<Integer, PlayerDirection> lookupInt = new HashMap<Integer, PlayerDirection>();
 	
 	static {
         for (PlayerDirection d : PlayerDirection.values()) {
@@ -22,7 +22,7 @@ public enum PlayerDirection {
     }
 	
 	static {
-        for (Direction d : Direction.values()) {
+        for (PlayerDirection d : PlayerDirection.values()) {
             lookupInt.put(d.getNumber(), d);
         }
     }
@@ -45,6 +45,6 @@ public enum PlayerDirection {
     }
     
     public static PlayerDirection getInt(int number) {
-        return lookup.get(number);
+        return lookupInt.get(number);
     }
 }

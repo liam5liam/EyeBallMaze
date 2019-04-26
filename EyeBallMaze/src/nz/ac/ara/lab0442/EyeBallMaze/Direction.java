@@ -45,6 +45,6 @@ public enum Direction {
     }
     
     public static Direction getInt(int number) {
-        return lookup.get(number);
+        return lookupInt.get(number);
     }
 }
