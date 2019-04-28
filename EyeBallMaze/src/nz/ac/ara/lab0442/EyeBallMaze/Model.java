@@ -82,7 +82,7 @@ public class Model implements IGame {
     	ArrayList<Object> temp = new ArrayList<Object>(Arrays.asList(out));
     	if(y >= GameMap.length || x > GameMap[0].length || y < 0 || x < 0){
     		temp.add(false);
-    		System.out.println("Invalid Mo");
+    		System.out.println("Invalid Move");
     	} else {
 	    	String[] item = GameMap[y][x].split("");
 	    	Shapes shape = Shapes.get(item[0]);
@@ -97,7 +97,7 @@ public class Model implements IGame {
 		return temp.toArray();
     }
     
-    public void checkMove(String move){
+    public void makeMove(String move){
     	String[] theirInput = move.split("");
     	Direction direction = Direction.get(theirInput[0].toUpperCase());
     	
@@ -267,7 +267,7 @@ public class Model implements IGame {
 	    	Scanner in = new Scanner(System.in);
 	    	System.out.println("Enter next move. Format {direction}{steps}");
 	    	String s = in.nextLine();
-	    	this.checkMove(s);
+	    	this.makeMove(s);
 	    	System.out.println(this.moveCounter);
 	    	System.out.println(this.goalCounter);
 	    	System.out.println(this.goalsSolved);

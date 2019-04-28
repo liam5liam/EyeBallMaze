@@ -6,10 +6,12 @@ import org.junit.Test;
 
 public class EyeBallMazeUnitTests {
 
+	@SuppressWarnings("deprecation")
 	@Test
 	public void test1ForLocationXY() {
 		//Assert
 		Model model = new Model();
+		model.updateMaze();
 		
 		//TestCase
 		Object[] result = model.whatsAt(2, 0);
@@ -23,6 +25,7 @@ public class EyeBallMazeUnitTests {
 	public void test2ForLocationXY() {
 		//Assert
 		Model model = new Model();
+		model.updateMaze();
 		
 		//TestCase
 		Object[] result = model.whatsAt(1, 1);
@@ -36,6 +39,7 @@ public class EyeBallMazeUnitTests {
 	public void test3ForLocationXY() {
 		//Assert
 		Model model = new Model();
+		model.updateMaze();
 		
 		//TestCase
 		Object[] result = model.whatsAt(2, 1);
@@ -49,6 +53,7 @@ public class EyeBallMazeUnitTests {
 	public void test4ForLocationXY() {
 		//Assert
 		Model model = new Model();
+		model.updateMaze();
 		
 		//TestCase
 		Object[] result = model.whatsAt(3, 3);
@@ -62,6 +67,7 @@ public class EyeBallMazeUnitTests {
 	public void test5ForLocationXY() {
 		//Assert
 		Model model = new Model();
+		model.updateMaze();
 		
 		//TestCase
 		Object[] result = model.whatsAt(3, 4);
@@ -318,6 +324,145 @@ public class EyeBallMazeUnitTests {
 		//TestCase
 		PlayerDirection result = PlayerDirection.get("R");
 		PlayerDirection expected = PlayerDirection.Right;
+		
+		//Result
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void test27ForMoveUpdate() {
+		//Assert
+		Model model = new Model();
+		model.updateMaze();
+		model.makeMove("w2");
+		
+		//TestCase
+		Object[] result = model.whatsAt(1, 3);
+		Object[] expected = {Shapes.Triangle, Colours.Blue, Goal.NaG};
+		
+		//Result
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void test28ForMoveUpdate() {
+		//Assert
+		Model model = new Model();
+		model.updateMaze();
+		model.makeMove("w2");
+		model.updateMaze();
+		model.makeMove("a1");
+		
+		//TestCase
+		Object[] result = model.whatsAt(0, 3);
+		Object[] expected = {Shapes.Triangle, Colours.Red, Goal.NaG};
+		
+		//Result
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void test29ForGoalPath() {
+		//Assert
+		Model model = new Model();
+		model.updateMaze();
+		model.makeMove("w2");
+		model.updateMaze();
+		model.makeMove("d2");
+		model.updateMaze();
+		model.makeMove("w2");
+		model.updateMaze();
+		model.makeMove("a3");
+		model.updateMaze();
+		model.makeMove("s3");
+		model.updateMaze();
+		model.makeMove("d2");
+		model.updateMaze();
+		model.makeMove("w4");
+		model.updateMaze();
+		
+		//TestCase
+		Object[] result = model.whatsAt(2, 0);
+		Object[] expected = {Shapes.Triangle, Colours.Red, Goal.Open};
+		
+		//Result
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void test30ForCantMoveBackwards() {
+		//Assert
+		Model model = new Model();
+		model.updateMaze();
+		model.makeMove("w2");
+		model.makeMove("s2");
+				
+		//TestCase
+		PlayerDirection result = model.player.looking;
+		PlayerDirection expected = PlayerDirection.Up;
+		
+		//Result
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void test31CheckIsComplete() {
+		//Assert
+		Model model = new Model();
+		model.updateMaze();
+		model.makeMove("w2");
+		model.updateMaze();
+		model.makeMove("d2");
+		model.updateMaze();
+		model.makeMove("w2");
+		model.updateMaze();
+		model.makeMove("a3");
+		model.updateMaze();
+		model.makeMove("s3");
+		model.updateMaze();
+		model.makeMove("d2");
+		model.updateMaze();
+		model.makeMove("w4");
+		model.updateMaze();
+		
+		//TestCase
+		Boolean result = model.isComplete();
+		Boolean expected = false;
+		
+		//Result
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void test32CheckIsComplete() {
+		//Assert
+		Model model = new Model();
+		model.updateMaze();
+		
+		//TestCase
+		Boolean result = model.isComplete();
+		Boolean expected = true;
+		
+		//Result
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void test33CheckMoveCounter() {
+		//Assert
+		Model model = new Model();
+		model.updateMaze();
+		model.makeMove("w2");
+		model.makeMove("d2");
+		model.makeMove("w2");
+		model.makeMove("a3");
+		model.makeMove("s3");
+		model.makeMove("d2");
+		model.makeMove("w4");
+		
+		//TestCase
+		Integer result = model.moveCounter;
+		Integer expected = 7;
 		
 		//Result
 		assertEquals(expected, result);
