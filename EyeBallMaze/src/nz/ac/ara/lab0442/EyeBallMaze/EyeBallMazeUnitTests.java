@@ -124,6 +124,8 @@ public class EyeBallMazeUnitTests {
 		assertEquals(expected, result);
 	}
 	
+	
+	
 	@Test
 	public void test10ForEnumGoal() {
 		//Assert
@@ -426,7 +428,7 @@ public class EyeBallMazeUnitTests {
 		
 		//TestCase
 		Boolean result = model.isComplete();
-		Boolean expected = false;
+		Boolean expected = true;
 		
 		//Result
 		assertEquals(expected, result);
@@ -469,6 +471,90 @@ public class EyeBallMazeUnitTests {
 		//TestCase
 		Integer result = model.moveCounter;
 		Integer expected = 7;
+		
+		//Result
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void test34ForEnumShapes() {
+		//Assert
+		
+		//TestCase
+		Shapes result = Shapes.get("S");
+		Shapes expected = Shapes.Star;
+		
+		//Result
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void test35ForEnumShapes() {
+		//Assert
+		
+		//TestCase
+		Shapes result = Shapes.get("D");
+		Shapes expected = Shapes.Diamond;
+		
+		//Result
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void test36ForEnumShapes() {
+		//Assert
+		
+		//TestCase
+		Shapes result = Shapes.get("T");
+		Shapes expected = Shapes.Triangle;
+		
+		//Result
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void test37ForEnumShapes() {
+		//Assert
+		
+		//TestCase
+		Shapes result = Shapes.get("P");
+		Shapes expected = Shapes.Plus;
+		
+		//Result
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void test38ForEnumShapes() {
+		//Assert
+		
+		//TestCase
+		String result = Shapes.Triangle.getAbbreviation();
+		String expected = "T";
+		
+		//Result
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void test39ForEnumShapes() {
+		//Assert
+		
+		//TestCase
+		String result = Shapes.Star.getAbbreviation();
+		String expected = "S";
+		
+		//Result
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void test40ForEnumShapes() {
+		//Assert
+		
+		//TestCase
+		String result = Shapes.Diamond.getAbbreviation();
+		String expected = "D";
 		
 		//Result
 		assertEquals(expected, result);
