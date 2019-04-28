@@ -4,7 +4,7 @@ public interface IGame {
 	public Integer getRowCount();
 	public Integer getcolumnCount();
 	public void restartMaze();
-	public void checkMove(String move);
+	public void makeMove(String move);
 	public Object[] whatsAt(int x, int y);
 	public void updateMove();
 	public void showNextMove();

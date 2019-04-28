@@ -6,7 +6,6 @@ import org.junit.Test;
 
 public class EyeBallMazeUnitTests {
 
-	@SuppressWarnings("deprecation")
 	@Test
 	public void test1ForLocationXY() {
 		//Assert
@@ -383,7 +382,7 @@ public class EyeBallMazeUnitTests {
 		
 		//TestCase
 		Object[] result = model.whatsAt(2, 0);
-		Object[] expected = {Shapes.Triangle, Colours.Red, Goal.Open};
+		Object[] expected = {Shapes.Triangle, Colours.Red, Goal.Done};
 		
 		//Result
 		assertEquals(expected, result);
@@ -453,12 +452,19 @@ public class EyeBallMazeUnitTests {
 		Model model = new Model();
 		model.updateMaze();
 		model.makeMove("w2");
+		model.updateMaze();
 		model.makeMove("d2");
+		model.updateMaze();
 		model.makeMove("w2");
+		model.updateMaze();
 		model.makeMove("a3");
+		model.updateMaze();
 		model.makeMove("s3");
+		model.updateMaze();
 		model.makeMove("d2");
+		model.updateMaze();
 		model.makeMove("w4");
+		model.updateMaze();
 		
 		//TestCase
 		Integer result = model.moveCounter;
