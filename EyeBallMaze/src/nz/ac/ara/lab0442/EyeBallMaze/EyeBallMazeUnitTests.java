@@ -3,13 +3,20 @@ package nz.ac.ara.lab0442.EyeBallMaze;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 public class EyeBallMazeUnitTests {
 
+	Model model;
+	
+	@BeforeEach
+	public void makeModel() {
+		model = new Model();
+	}
+	
 	@Test
 	public void test1ForLocationXY() {
 		//Assert
-		Model model = new Model();
 		model.updateMaze();
 		
 		//TestCase
@@ -23,7 +30,6 @@ public class EyeBallMazeUnitTests {
 	@Test
 	public void test2ForLocationXY() {
 		//Assert
-		Model model = new Model();
 		model.updateMaze();
 		
 		//TestCase
